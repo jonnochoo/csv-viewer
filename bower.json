@@ -1,0 +1,21 @@
+{
+  "name": "csv-viewer",
+  "version": "0.0.0",
+  "authors": [
+    "Jonathon Choo <jonathonc@irwinsolutions.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.2.19",
+    "comma-separated-values": "~3.2.0",
+    "bootstrap": "~3.2.0",
+    "knockout": "~3.1.0"
+  }
+}

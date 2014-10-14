@@ -1,0 +1,40 @@
+body {  
+  padding: 20px;
+  font-family: Segoe UI;
+}
+
+textarea.textarea-csv {
+  font-family: Segoe UI;
+  padding: 10px;
+  width: 100%;
+  height: 100%;
+  margin-bottom: 0;
+}
+
+.navigation {
+  background-color: #008cba;
+}
+
+.navigation .btn {
+  margin-bottom: 0;
+}
+
+.table {
+  width: 100%;
+  color: #7e7e7e;
+}
+
+td {
+  padding: 10px;
+  margin: 0;
+}
+
+.table-striped tr:nth-child(even)>td {
+  background-color: #EFEFEF;
+}
+
+.table-striped tr:first-child>td {
+  color: #EFEFEF;
+  background-color: #888888;
+  font-weight: bold;
+}

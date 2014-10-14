@@ -1,0 +1,32 @@
+<html ng-app="app">
+<head>
+  <title>CSV Viewer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="site.css" />
+</head>
+<body>
+  <div class="containers">
+    <div class="header">
+
+    </div>
+    <div ng-controller="csvController as vm">
+      {{vm.data}}
+      <table>
+      </table>
+    </div>
+
+    <h2>Raw CSV</h2>
+    <textarea class="form-control" data-bind="value:csv"></textarea>
+
+  </div>
+
+  <script type="text/javascript" src="bower_components/angular/angular.js"></script>
+  <script type="text/javascript" src="bower_components/comma-separated-values/csv.js"></script>
+  <script type="text/javascript" src="app.js"></script>
+  <script type="text/javascript" src="csvController.js"></script>
+  
+
+  <script type="text/javascript">
+  </script>
+</body>
+</html>
