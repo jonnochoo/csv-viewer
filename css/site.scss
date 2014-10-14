@@ -1,18 +1,21 @@
+$headerColor: #008cba;
+
 body {  
   padding: 20px;
   font-family: Segoe UI;
 }
 
 textarea.textarea-csv {
-  font-family: Segoe UI;
+  font-family: 'Inconsolata', Segoe UI;
+  font-size: 18px;
   padding: 10px;
   width: 100%;
-  height: 100%;
+  height: calc(100% - 44px);
   margin-bottom: 0;
 }
 
 .navigation {
-  background-color: #008cba;
+  background-color: $headerColor;
 }
 
 .navigation .btn {
@@ -24,17 +27,7 @@ textarea.textarea-csv {
   color: #7e7e7e;
 }
 
-td {
-  padding: 10px;
-  margin: 0;
-}
 
-.table-striped tr:nth-child(even)>td {
-  background-color: #EFEFEF;
-}
-
-.table-striped tr:first-child>td {
-  color: #EFEFEF;
-  background-color: #888888;
-  font-weight: bold;
+button.small.btn-active {
+  background-color: saturate($headerColor, 50%);
 }

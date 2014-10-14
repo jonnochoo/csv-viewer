@@ -14,8 +14,10 @@
   ],
   "dependencies": {
     "angular": "~1.2.19",
-    "comma-separated-values": "~3.2.0",
     "bootstrap": "~3.2.0",
     "knockout": "~3.1.0"
+  },
+  "devDependencies": {
+    "foundation-icon-fonts": "zurb/foundation-icon-fonts"
   }
 }

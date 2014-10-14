@@ -16,13 +16,17 @@
     };
 
     vm.showData = function(){
-      console.log(vm.viewType);
       vm.viewType = "data";
     };
 
     $scope.$watch('csv', function(val){
-      var data = new CSV(val + "\r\n").parse();
-      vm.rows = data;
+      if(val){
+        var results = Papa.parse(val);
+
+        if(results){
+          vm.rows = results.data;
+        }
+      }
       
     })
   };
