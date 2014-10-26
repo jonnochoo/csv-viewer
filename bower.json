@@ -14,10 +14,7 @@
   ],
   "dependencies": {
     "angular": "~1.2.19",
-    "bootstrap": "~3.2.0",
-    "knockout": "~3.1.0"
-  },
-  "devDependencies": {
-    "foundation-icon-fonts": "zurb/foundation-icon-fonts"
+    "foundation": "~5.4.6",
+    "foundation-icon-fonts": "*"
   }
 }
