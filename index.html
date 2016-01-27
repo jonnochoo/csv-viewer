@@ -2,31 +2,62 @@
 <head>
   <title>CSV Viewer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="site.css" />
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.10/css/jquery.dataTables.min.css" />
+  <link rel="stylesheet" href="css/site.css" />
+  <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
 </head>
 <body>
-  <div class="containers">
-    <div class="header">
-
+    <h1>CSV Viewer</h1>
+    
+    <div class="csvSection">
+      <textarea id="csvTextarea" class="u-full-width" placeholder="Add CSV..."></textarea>
+      <a id="generateBtn" class="button button-primary" href="#">Generate</a>
     </div>
-    <div ng-controller="csvController as vm">
-      {{vm.data}}
-      <table>
-      </table>
+    
+    <div class="csvTable" style="display:none">
+      <!--<div class="row">
+        <div class="six columns">
+          <p><span id="numberOfRecords"></span> records</p>
+        </div>
+        <div class="six columns" style="text-align: right"><a id="showCsvBtn" class="button button-primary" href="#">Show Data</a></div>
+      </div>-->
+      <table id="csvTable" class="display" width="100%"></table>
     </div>
 
-    <h2>Raw CSV</h2>
-    <textarea class="form-control" data-bind="value:csv"></textarea>
-
-  </div>
-
-  <script type="text/javascript" src="bower_components/angular/angular.js"></script>
-  <script type="text/javascript" src="bower_components/comma-separated-values/csv.js"></script>
-  <script type="text/javascript" src="app.js"></script>
-  <script type="text/javascript" src="csvController.js"></script>
-  
-
+  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+  <script type="text/javascript" src="http://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
+  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.2/papaparse.min.js"></script>
   <script type="text/javascript">
+    $(document).ready(function() {
+      var table = null;
+      $(".csvTable").hide();
+      
+      $("#generateBtn").click(function() {
+        var csv = $('#csvTextarea').val().trim();
+        var results = Papa.parse(csv);
+        var columns = results.data[0].map(function(item) { return { title: item }; });
+        var data = results.data.splice(1, results.data.length); 
+        $("#numberOfRecords").html(data.length);
+        table = $('#csvTable').DataTable({
+          paging: false,
+          data: data,
+          columns: columns,
+          dom: '<"top"if>Show'
+        });
+        
+        $(".csvTable").show();
+        $(".csvSection").hide();
+      });
+      
+      $("#showCsvBtn").click(function() {
+        table.destroy();
+        $(".csvTable").hide();
+        $(".csvSection").show();        
+      });
+    });
+    
   </script>
 </body>
 </html>

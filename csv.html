@@ -1,0 +1,78 @@
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.2/css/foundation.min.css" />
+</head>
+
+<body>
+  <div class="ui-layout-center"><div id="csvTextArea"></div></div>
+  <div class="ui-layout-west">East</div>
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-layout/1.4.3/jquery.layout.min.js"></script>
+  <script>
+  $(document).ready(function() {
+    $('body').layout({
+      applyDefaultStyles: true
+    });
+  });
+  </script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/react.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.2/papaparse.min.js"></script>
+
+  <script type="text/jsx">
+    var CsvTextArea = React.createClass({
+       getInitialState: function(){
+        return {
+          csv: { data: [ [] ] }
+         }
+      },
+      handleChange: function(event) {
+        var csv = Papa.parse(event.target.value);
+        this.setState({csv: csv});
+      },
+      render: function() {
+        return <div>
+          <label>Enter CSV</label>
+          <textarea onChange={this.handleChange}></textarea>
+          {
+            <table>
+              <thead>
+                <tr>
+                  {
+                    this.state.csv.data[0].map(function(row) {
+                      return <th>{row}</th>
+                    })
+                  }
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  this.state.csv.data.map(function(row){
+                    return <tr>
+                      {
+                        row.map(function(value) {
+                          return <td>{value}</td>  
+                        })
+                        
+                      }
+                    </tr>
+                  })
+                  
+                }
+              </tbody>
+              
+            </table>
+          }
+
+        </div>
+      }
+    });
+
+    React.render(<CsvTextArea message="t" />, document.getElementById('csvTextArea'));
+  </script>
+</body>
+
+</html>
