@@ -14,11 +14,11 @@
     <div class="header">
       <h1><i class="fa fa-file-code-o"></i> CSV Viewer</h1>
       <div>
-        <a id="showCsvBtn" class="button button-info" href="#">Try Again</a>
+        <a id="tryAgainBtn" class="button button-info" href="#">Try Again</a>
       </div>
     </div>
     
-    <div class="csvSection">
+    <div id="csvFormSection">
       <form action="/" class="dropzone" id="myDropzone">
         <div class="dz-message"> Drag and drop a CSV file here or click to select a file.</div>
       </form>
@@ -26,8 +26,8 @@
       <a id="generateBtn" class="button button-primary" href="#">Generate</a>
     </div>
     
-    <div class="csvTable" style="display:none">
-      <table id="csvTable" class="display" width="100%"></table>
+    <div id="csvTableSection">
+      <table id="csvTable" width="100%"></table>
     </div>
 
   <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
@@ -36,6 +36,16 @@
   <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/dropzone/4.2.0/min/dropzone.min.js"></script>
   <script type="text/javascript">
     $(document).ready(function() {
+      
+      var table = null;
+      var csvFormSection = $("#csvFormSection");
+      var tryAgainBtn = $("#tryAgainBtn");
+      var generateBtn = $("#generateBtn");
+      var csvTextarea = $('#csvTextarea');
+      var csvTableSection = $("#csvTableSection");
+      var csvTable = $("#csvTable");
+      var numberOfRecordsEl = $("#numberOfRecords");
+      
       Dropzone.autoDiscover = false;
       var myDropzone = new Dropzone("#myDropzone", { 
         autoProcessQueue: false
@@ -52,41 +62,41 @@
         }
       });
       
-      var table = null;
-      $(".csvTable").hide();
-      $("#showCsvBtn").hide();
+      csvFormSection.show();
+      csvTableSection.hide();
+      tryAgainBtn.hide();
       
-      $("#generateBtn").click(function() {
-        buildCsvTable($('#csvTextarea').val());
+      generateBtn.click(function() {
+        buildCsvTable(csvTextarea.val());
       });
       
-      $("#showCsvBtn").click(function() {
+      tryAgainBtn.click(function() { 
+        toggleView();        
         table.destroy();
-        $(".csvTable").hide();
-        $(".csvSection").show();
         myDropzone.removeAllFiles(true);
       });
       
       function buildCsvTable(csv) {
-        var numberOfRecordsEl = $("#numberOfRecords");
-        var csvTableEl = $('#csvTable');
-        
-        $(".csvSection").hide();
-        $(".csvTable").show();
-        
         var results = Papa.parse(csv.trim());
         var columns = results.data[0].map(function(item) { return { title: item }; });
         var data = results.data.splice(1, results.data.length); 
         numberOfRecordsEl.html(data.length);
         
-        csvTableEl.empty();
-        table = csvTableEl.DataTable({
+        csvTable.empty();
+        table = csvTable.DataTable({
           paging: false,
           data: data,
           columns: columns,
           dom: '<"top"if>Show'
         });
-        $("#showCsvBtn").show(); 
+       
+        toggleView(); 
+      }
+      
+      function toggleView() {      
+        csvFormSection.toggle();
+        csvTableSection.toggle();
+        tryAgainBtn.toggle();
       }
     });
     
