@@ -5,13 +5,18 @@
   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.10/css/jquery.dataTables.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.2.0/min/dropzone.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css" />
   <link rel="stylesheet" href="css/site.css" />
   <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
 </head>
 <body>
-    <h1>CSV Viewer</h1>
+    <h1><i class="fa fa-file-code-o"></i> CSV Viewer</h1>
     
     <div class="csvSection">
+      <form action="/" class="dropzone" id="myDropzone">
+        <div class="dz-message"> Drag and drop a CSV file here or click to select a file.</div>
+      </form>
       <textarea id="csvTextarea" class="u-full-width" placeholder="Add CSV..."></textarea>
       <a id="generateBtn" class="button button-primary" href="#">Generate</a>
     </div>
@@ -29,26 +34,30 @@
   <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
   <script type="text/javascript" src="http://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
   <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.2/papaparse.min.js"></script>
+  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/dropzone/4.2.0/min/dropzone.min.js"></script>
   <script type="text/javascript">
     $(document).ready(function() {
+      Dropzone.autoDiscover = false;
+      var myDropzone = new Dropzone("#myDropzone", { 
+        autoProcessQueue: false
+      });
+      myDropzone.on("addedfile", function(file) { 
+        if (window.File && window.FileReader && window.FileList && window.Blob) {
+          var reader = new FileReader();
+          reader.onload = function(e) {
+            buildCsvTable(reader.result);
+          }
+          reader.readAsText(file);
+        } else {
+          alert('The File APIs are not fully supported in this browser.');
+        }
+      });
+      
       var table = null;
       $(".csvTable").hide();
       
       $("#generateBtn").click(function() {
-        var csv = $('#csvTextarea').val().trim();
-        var results = Papa.parse(csv);
-        var columns = results.data[0].map(function(item) { return { title: item }; });
-        var data = results.data.splice(1, results.data.length); 
-        $("#numberOfRecords").html(data.length);
-        table = $('#csvTable').DataTable({
-          paging: false,
-          data: data,
-          columns: columns,
-          dom: '<"top"if>Show'
-        });
-        
-        $(".csvTable").show();
-        $(".csvSection").hide();
+        buildCsvTable($('#csvTextarea').val());
       });
       
       $("#showCsvBtn").click(function() {
@@ -56,6 +65,25 @@
         $(".csvTable").hide();
         $(".csvSection").show();        
       });
+      
+      function buildCsvTable(csv) {
+        var numberOfRecordsEl = $("#numberOfRecords");
+        var csvTableEl = $('#csvTable');
+        
+        var results = Papa.parse(csv.trim());
+        var columns = results.data[0].map(function(item) { return { title: item }; });
+        var data = results.data.splice(1, results.data.length); 
+        numberOfRecordsEl.html(data.length);
+        table = csvTableEl.DataTable({
+          paging: false,
+          data: data,
+          columns: columns,
+          dom: '<"top"if>Show'
+        });
+        
+        $(".csvTable").show();
+        $(".csvSection").hide();  
+      }
     });
     
   </script>
