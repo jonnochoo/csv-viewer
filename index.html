@@ -11,7 +11,12 @@
   <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
 </head>
 <body>
-    <h1><i class="fa fa-file-code-o"></i> CSV Viewer</h1>
+    <div class="header">
+      <h1><i class="fa fa-file-code-o"></i> CSV Viewer</h1>
+      <div>
+        <a id="showCsvBtn" class="button button-info" href="#">Try Again</a>
+      </div>
+    </div>
     
     <div class="csvSection">
       <form action="/" class="dropzone" id="myDropzone">
@@ -22,12 +27,6 @@
     </div>
     
     <div class="csvTable" style="display:none">
-      <!--<div class="row">
-        <div class="six columns">
-          <p><span id="numberOfRecords"></span> records</p>
-        </div>
-        <div class="six columns" style="text-align: right"><a id="showCsvBtn" class="button button-primary" href="#">Show Data</a></div>
-      </div>-->
       <table id="csvTable" class="display" width="100%"></table>
     </div>
 
@@ -55,6 +54,7 @@
       
       var table = null;
       $(".csvTable").hide();
+      $("#showCsvBtn").hide();
       
       $("#generateBtn").click(function() {
         buildCsvTable($('#csvTextarea').val());
@@ -63,26 +63,30 @@
       $("#showCsvBtn").click(function() {
         table.destroy();
         $(".csvTable").hide();
-        $(".csvSection").show();        
+        $(".csvSection").show();
+        myDropzone.removeAllFiles(true);
       });
       
       function buildCsvTable(csv) {
         var numberOfRecordsEl = $("#numberOfRecords");
         var csvTableEl = $('#csvTable');
         
+        $(".csvSection").hide();
+        $(".csvTable").show();
+        
         var results = Papa.parse(csv.trim());
         var columns = results.data[0].map(function(item) { return { title: item }; });
         var data = results.data.splice(1, results.data.length); 
         numberOfRecordsEl.html(data.length);
+        
+        csvTableEl.empty();
         table = csvTableEl.DataTable({
           paging: false,
           data: data,
           columns: columns,
           dom: '<"top"if>Show'
         });
-        
-        $(".csvTable").show();
-        $(".csvSection").hide();  
+        $("#showCsvBtn").show(); 
       }
     });
     
