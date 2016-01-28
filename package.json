@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "deploy": "cp .deploy/csv /etc/nginx/sites-enabled && nginx -s reload"
   },
   "author": "Jonathon Choo",
   "license": "ISC"
